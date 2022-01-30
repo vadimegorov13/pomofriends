@@ -18,15 +18,10 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
-  rules: {
-    curly: ['error'],
-    'linebreak-style': ['error', 'unix'],
-    'no-case-declarations': 'warn',
-    quotes: ['error', 'single', { avoidEscape: true }],
-  },
+  rules: {},
   settings: {
     react: {
       version: 'latest',
     },
   },
-}
+};
