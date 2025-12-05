@@ -1,3 +1,212 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+/*
+  🎨 SEMANTIC COLOR GUIDE - USE THESE, NOT THE SCALES!
+  
+  Your 5 main brand colors:
+  - Dust Grey: #ddd5d0  (warm light grey)
+  - Silver: #cfc0bd     (warm beige)
+  - Ash Grey: #b8b8aa   (neutral grey-green)
+  - Grey Olive: #7f9183 (muted sage green) → PRIMARY
+  - Granite: #586f6b    (dark teal-grey) → SECONDARY
+  
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  🏠 BACKGROUNDS (white cards on light grey background):
+  bg-bg-main         → #faf9f8 (light warm grey) - Main page background
+  bg-bg-foreground   → #ffffff (white) - Card backgrounds (MAIN CARDS)
+  bg-bg-muted        → #f5f2f0 (light grey) - Secondary buttons
+  bg-bg-accent       → #eae6e3 (light accent) - Hover states
+  
+  bg-surface         → #ffffff - Same as bg-bg-foreground (cards)
+  bg-surface-elevated → #ffffff - Dropdowns, modals
+  
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  🖊️ TEXT (mostly black):
+  text-text           → #1a1a1a (almost black) - Main text
+  text-text-secondary → #525252 (dark grey) - Secondary text
+  text-text-muted     → #737373 (medium grey) - Muted/disabled text
+  text-text-inverse   → #ffffff (white) - Text on colored backgrounds
+  
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  📦 BORDERS:
+  border-border        → #ddd5d0 (dust grey) - Default borders
+  border-border-light  → #eae6e3 - Subtle dividers
+  border-border-strong → #cdc3bc - Strong emphasis
+  
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  🎯 PRIMARY (Grey Olive #7f9183):
+  bg-primary / text-primary       → Main brand actions & highlights
+  bg-primary-hover                → Darker on hover
+  bg-primary-50 through 950       → Light to dark scale (use sparingly)
+  
+  🔘 SECONDARY (Granite #586f6b):
+  bg-secondary / text-secondary   → Alternative actions
+  bg-secondary-hover              → Darker on hover
+  bg-secondary-50 through 950     → Light to dark scale (use sparingly)
+  
+  ✨ ACCENT (Ash Grey #b8b8aa):
+  bg-accent / text-accent         → Subtle highlights
+  bg-accent-muted                 → Very light version
+  
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  ⚠️  AVOID using scale numbers like bg-dust-grey-800 unless absolutely necessary!
+      Use semantic names like bg-bg-foreground, text-text, bg-primary instead.
+*/
+
+@theme {
+  /* Base Brand Colors */
+  --color-dust-grey: #ddd5d0;
+  --color-silver: #cfc0bd;
+  --color-ash-grey: #b8b8aa;
+  --color-grey-olive: #7f9183;
+  --color-granite: #586f6b;
+
+  /* Dust Grey Scale */
+  --color-dust-grey-50: #faf9f8;
+  --color-dust-grey-100: #f5f2f0;
+  --color-dust-grey-200: #eae6e3;
+  --color-dust-grey-300: #ddd5d0;
+  --color-dust-grey-400: #cdc3bc;
+  --color-dust-grey-500: #b8aca4;
+  --color-dust-grey-600: #9a8d84;
+  --color-dust-grey-700: #7a6e66;
+  --color-dust-grey-800: #5a524d;
+  --color-dust-grey-900: #3d3833;
+  --color-dust-grey-950: #262220;
+
+  /* Silver Scale */
+  --color-silver-50: #f9f8f7;
+  --color-silver-100: #f3f0ef;
+  --color-silver-200: #e7e0df;
+  --color-silver-300: #cfc0bd;
+  --color-silver-400: #bfaea9;
+  --color-silver-500: #a99791;
+  --color-silver-600: #8d7a75;
+  --color-silver-700: #6f605c;
+  --color-silver-800: #534745;
+  --color-silver-900: #38302e;
+  --color-silver-950: #241f1e;
+
+  /* Ash Grey Scale */
+  --color-ash-grey-50: #f7f7f5;
+  --color-ash-grey-100: #efefeb;
+  --color-ash-grey-200: #deded7;
+  --color-ash-grey-300: #b8b8aa;
+  --color-ash-grey-400: #a5a593;
+  --color-ash-grey-500: #8e8e79;
+  --color-ash-grey-600: #747463;
+  --color-ash-grey-700: #5c5c4e;
+  --color-ash-grey-800: #44443a;
+  --color-ash-grey-900: #2e2e27;
+  --color-ash-grey-950: #1c1c18;
+
+  /* Grey Olive Scale */
+  --color-grey-olive-50: #f3f5f4;
+  --color-grey-olive-100: #e7ebe9;
+  --color-grey-olive-200: #cfd7d3;
+  --color-grey-olive-300: #7f9183;
+  --color-grey-olive-400: #6d7f72;
+  --color-grey-olive-500: #5d6d61;
+  --color-grey-olive-600: #4e5b51;
+  --color-grey-olive-700: #3f4941;
+  --color-grey-olive-800: #303732;
+  --color-grey-olive-900: #222623;
+  --color-grey-olive-950: #161817;
+
+  /* Granite Scale */
+  --color-granite-50: #f1f4f3;
+  --color-granite-100: #e3e8e7;
+  --color-granite-200: #c7d1cf;
+  --color-granite-300: #586f6b;
+  --color-granite-400: #4d615d;
+  --color-granite-500: #435350;
+  --color-granite-600: #394543;
+  --color-granite-700: #2f3836;
+  --color-granite-800: #252a29;
+  --color-granite-900: #1b1d1d;
+  --color-granite-950: #121313;
+
+  /* Semantic Background Colors */
+  --color-bg-main: #faf9f8;
+  --color-bg-foreground: #ffffff;
+  --color-bg-muted: #f5f2f0;
+  --color-bg-accent: #eae6e3;
+
+  /* Semantic Surface Colors */
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-surface-overlay: #f5f2f0;
+
+  /* Semantic Border Colors */
+  --color-border: #ddd5d0;
+  --color-border-light: #eae6e3;
+  --color-border-strong: #cdc3bc;
+
+  /* Semantic Text Colors */
+  --color-text: #1a1a1a;
+  --color-text-secondary: #525252;
+  --color-text-muted: #737373;
+  --color-text-inverse: #ffffff;
+
+  /* Primary (Grey Olive) */
+  --color-primary-50: #f3f5f4;
+  --color-primary-100: #e7ebe9;
+  --color-primary-200: #cfd7d3;
+  --color-primary-300: #7f9183;
+  --color-primary-400: #6d7f72;
+  --color-primary-500: #5d6d61;
+  --color-primary-600: #4e5b51;
+  --color-primary-700: #3f4941;
+  --color-primary-800: #303732;
+  --color-primary-900: #222623;
+  --color-primary-950: #161817;
+  --color-primary: #7f9183;
+  --color-primary-hover: #6d7f72;
+  --color-primary-active: #5d6d61;
+
+  /* Secondary (Granite) */
+  --color-secondary-50: #f1f4f3;
+  --color-secondary-100: #e3e8e7;
+  --color-secondary-200: #c7d1cf;
+  --color-secondary-300: #586f6b;
+  --color-secondary-400: #4d615d;
+  --color-secondary-500: #435350;
+  --color-secondary-600: #394543;
+  --color-secondary-700: #2f3836;
+  --color-secondary-800: #252a29;
+  --color-secondary-900: #1b1d1d;
+  --color-secondary-950: #121313;
+  --color-secondary: #586f6b;
+  --color-secondary-hover: #4d615d;
+  --color-secondary-active: #435350;
+
+  /* Accent Colors */
+  --color-accent: #b8b8aa;
+  --color-accent-hover: #a5a593;
+  --color-accent-muted: #deded7;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b8b8aa;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a5a593;
+}

@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
   import { Stores, Helpers } from '$lib/index';
   import { PomodoroEventTypeEnum } from '$lib/stores';
 
@@ -55,4 +55,18 @@
       Finished! Pomodoros completed: {context.pomodorosCompleted}
     </div>
   {/if}
+</div> -->
+
+<script lang="ts">
+  import PomodoroTimer from '$lib/components/PomodoroTimer.svelte';
+  import TaskList from '$lib/components/TaskList.svelte';
+  import GroupChat from '$lib/components/GroupChat.svelte';
+</script>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="flex flex-col gap-6">
+    <PomodoroTimer />
+    <TaskList />
+  </div>
+  <GroupChat />
 </div>
