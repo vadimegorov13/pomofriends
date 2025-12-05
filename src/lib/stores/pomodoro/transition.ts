@@ -1,13 +1,17 @@
-import type { PomodoroState, PomodoroEvent } from './types';
+import {
+  type PomodoroState,
+  type PomodoroEvent,
+  PomodoroEventTypeEnum,
+} from './types';
 
-export function transition(
+export default function transition(
   pomodoroState: PomodoroState,
   event: PomodoroEvent
 ): PomodoroState {
   const { state, context } = pomodoroState;
 
   switch (event.type) {
-    case 'START_FOCUS': {
+    case PomodoroEventTypeEnum.START_FOCUS: {
       return {
         state: 'running',
         context: {
@@ -18,7 +22,7 @@ export function transition(
       };
     }
 
-    case 'START_SHORT_BREAK': {
+    case PomodoroEventTypeEnum.START_SHORT_BREAK: {
       return {
         state: 'running',
         context: {
@@ -29,7 +33,7 @@ export function transition(
       };
     }
 
-    case 'START_LONG_BREAK': {
+    case PomodoroEventTypeEnum.START_LONG_BREAK: {
       return {
         state: 'running',
         context: {
@@ -40,17 +44,17 @@ export function transition(
       };
     }
 
-    case 'PAUSE': {
+    case PomodoroEventTypeEnum.PAUSE: {
       if (state !== 'running') return pomodoroState;
       return { ...pomodoroState, state: 'paused' };
     }
 
-    case 'RESUME': {
+    case PomodoroEventTypeEnum.RESUME: {
       if (state !== 'paused') return pomodoroState;
       return { ...pomodoroState, state: 'running' };
     }
 
-    case 'TICK': {
+    case PomodoroEventTypeEnum.TICK: {
       if (state !== 'running') return pomodoroState;
       if (context.remaining <= 1) {
         // timer finished -> move to finished state
@@ -78,7 +82,7 @@ export function transition(
       };
     }
 
-    case 'SKIP': {
+    case PomodoroEventTypeEnum.SKIP: {
       // Skip current session but keep stats as-is
       return {
         state: 'finished',
@@ -86,7 +90,7 @@ export function transition(
       };
     }
 
-    case 'SETTINGS_UPDATED': {
+    case PomodoroEventTypeEnum.SETTINGS_UPDATED: {
       const durations = {
         ...context.durations,
         ...event.payload,

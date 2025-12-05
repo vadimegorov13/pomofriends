@@ -5,7 +5,7 @@ import {
   PomodoroEventTypeEnum,
 } from './types';
 import { initialState } from './constants';
-import { transition } from './transition';
+import transition from './transition';
 
 function createPomodoroMachine() {
   const { subscribe, update, set } = writable<PomodoroState>(initialState);
@@ -60,5 +60,4 @@ function createPomodoroMachine() {
   };
 }
 
-export { createPomodoroMachine };
-export const pomodoroMachine = createPomodoroMachine();
+export const machine = createPomodoroMachine();

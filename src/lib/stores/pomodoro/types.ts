@@ -1,6 +1,6 @@
 export type TimerMode = 'focus' | 'short_break' | 'long_break';
 
-export type MachineStateName = 'idle' | 'running' | 'paused' | 'finished';
+export type MachineState = 'idle' | 'running' | 'paused' | 'finished';
 
 export interface PomodoroContext {
   mode: TimerMode;
@@ -15,7 +15,7 @@ export interface PomodoroContext {
 }
 
 export interface PomodoroState {
-  state: MachineStateName;
+  state: MachineState;
   context: PomodoroContext;
 }
 

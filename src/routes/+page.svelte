@@ -1,18 +1,11 @@
 <script lang="ts">
-  import { Pomodoro, PomodoroEventTypeEnum } from '$lib/index';
+  import { Stores, Helpers } from '$lib/index';
+  import { PomodoroEventTypeEnum } from '$lib/stores';
 
-  const machine = Pomodoro.machine;
+  const { machine } = Stores.Pomodoro;
+
   $: ({ state, context } = $machine);
-
-  const { send } = Pomodoro.machine;
-
-  function formatTime(seconds: number) {
-    const m = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, '0');
-    const s = (seconds % 60).toString().padStart(2, '0');
-    return `${m}:${s}`;
-  }
+  const { send } = machine;
 </script>
 
 <h1 class="text-3xl font-bold text-red-500">POMOFRIENDS</h1>
@@ -23,7 +16,7 @@
   </div>
 
   <div class="text-6xl font-mono">
-    {formatTime(context.remaining)}
+    {Helpers.formatTime(context.remaining)}
   </div>
 
   <div class="flex gap-2">
