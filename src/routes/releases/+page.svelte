@@ -427,7 +427,7 @@
                                 height="14"
                                 class="text-accent/60 mt-0.5 shrink-0 transition-transform duration-300 group-hover/subitem:translate-x-1"
                               />
-                              <span class="leading-relaxed">{item}</span>
+                              <span class="leading-relaxed">{item.text}</span>
                             </li>
                           {/each}
                         </ul>
