@@ -1,5 +1,6 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
+  import { onMount } from 'svelte';
 
   interface LeaderboardEntry {
     rank: number;
@@ -12,6 +13,14 @@
   }
 
   let timeframe: 'week' | 'month' | 'allTime' = 'week';
+  let isVisible = false;
+
+  onMount(() => {
+    // Trigger animations after component mounts
+    setTimeout(() => {
+      isVisible = true;
+    }, 100);
+  });
 
   const leaderboardData: LeaderboardEntry[] = [
     {
@@ -86,16 +95,28 @@
 </script>
 
 <div class="max-w-5xl mx-auto">
-  <div class="mb-8">
-    <h1 class="text-4xl font-bold text-text mb-4">Leaderboard</h1>
+  <div
+    class="mb-8 transition-all duration-700 {isVisible
+      ? 'opacity-100 translate-y-0'
+      : 'opacity-0 -translate-y-4'}"
+  >
+    <h1 class="text-4xl font-bold text-text mb-4">
+      <span class="text-primary">Leader</span><span class="text-secondary"
+        >board</span
+      >
+    </h1>
     <p class="text-xl text-text-secondary">
-      See who's crushing their productivity goals this week.
+      See who's crushing their <span class="font-semibold text-primary"
+        >productivity goals</span
+      > this week.
     </p>
   </div>
 
   <!-- Timeframe Selector -->
   <div
-    class="flex gap-2 mb-6 bg-surface border border-border rounded-lg p-1 w-fit shadow-lg"
+    class="flex gap-2 mb-6 bg-surface border border-border rounded-lg p-1 w-fit shadow-lg transition-all duration-700 delay-100 {isVisible
+      ? 'opacity-100 translate-x-0'
+      : 'opacity-0 -translate-x-8'}"
   >
     <button
       class="px-4 py-2 rounded-md font-medium text-sm transition-all {timeframe ===
@@ -128,7 +149,9 @@
 
   <!-- Leaderboard Table -->
   <div
-    class="bg-surface border border-border rounded-xl overflow-hidden shadow-lg"
+    class="bg-surface border border-border rounded-xl overflow-hidden shadow-lg transition-all duration-700 delay-200 {isVisible
+      ? 'opacity-100 translate-y-0'
+      : 'opacity-0 translate-y-8'}"
   >
     <!-- Header -->
     <div class="bg-bg-foreground border-b border-border px-6 py-4">
@@ -147,7 +170,7 @@
     <div class="divide-y divide-border">
       {#each leaderboardData as entry (entry.rank)}
         <div
-          class="px-6 py-4 hover:bg-bg-foreground transition-colors {entry.rank <=
+          class="px-6 py-4 hover:bg-bg-foreground transition-colors group {entry.rank <=
           3
             ? 'bg-primary-50'
             : ''}"
@@ -156,7 +179,7 @@
             <!-- Rank -->
             <div class="col-span-1">
               <div
-                class="w-10 h-10 rounded-full flex items-center justify-center font-bold {getRankBadgeColor(
+                class="w-10 h-10 rounded-full flex items-center justify-center font-bold transition-transform duration-300 group-hover:rotate-12 {getRankBadgeColor(
                   entry.rank
                 )}"
               >
@@ -169,7 +192,9 @@
             </div>
 
             <!-- User -->
-            <div class="col-span-4 flex items-center gap-3">
+            <div
+              class="col-span-4 flex items-center gap-3 transition-transform duration-300 group-hover:translate-x-2"
+            >
               <div
                 class="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white text-sm"
                 style="background: {entry.color};"
@@ -190,7 +215,9 @@
             </div>
 
             <!-- Pomodoros -->
-            <div class="col-span-3 text-center">
+            <div
+              class="col-span-3 text-center transition-transform duration-300 group-hover:translate-x-2"
+            >
               <div class="text-2xl font-bold text-text">
                 {entry.pomodorosCompleted}
               </div>
@@ -198,7 +225,9 @@
             </div>
 
             <!-- Streak -->
-            <div class="col-span-2 text-center">
+            <div
+              class="col-span-2 text-center transition-transform duration-300 group-hover:translate-x-2"
+            >
               <div class="flex items-center justify-center gap-1">
                 <Icon
                   icon="lucide:calendar-check"
@@ -214,7 +243,9 @@
             </div>
 
             <!-- Total Hours -->
-            <div class="col-span-2 text-center">
+            <div
+              class="col-span-2 text-center transition-transform duration-300 group-hover:translate-x-2"
+            >
               <div class="text-lg font-semibold text-text">
                 {entry.totalHours}h
               </div>
@@ -228,9 +259,15 @@
 
   <!-- Stats Cards -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-    <div class="bg-surface border border-border rounded-xl p-6 shadow-lg">
+    <div
+      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-300 hover:shadow-xl group {isVisible
+        ? 'opacity-100 translate-x-0'
+        : 'opacity-0 -translate-x-8'}"
+    >
       <div class="flex items-center gap-3 mb-2">
-        <div class="p-2 bg-primary-100 rounded-lg">
+        <div
+          class="p-2 bg-primary-100 rounded-lg transition-transform duration-300 group-hover:rotate-12"
+        >
           <Icon
             icon="lucide:target"
             width="20"
@@ -241,12 +278,20 @@
         <h3 class="font-semibold text-text">Your Rank</h3>
       </div>
       <div class="text-3xl font-bold text-text mb-1">12th</div>
-      <p class="text-sm text-text-secondary">Out of 156 users</p>
+      <p class="text-sm text-text-secondary">
+        Out of <span class="font-semibold text-primary">156 users</span>
+      </p>
     </div>
 
-    <div class="bg-surface border border-border rounded-xl p-6 shadow-lg">
+    <div
+      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-400 hover:shadow-xl group {isVisible
+        ? 'opacity-100 translate-y-0'
+        : 'opacity-0 translate-y-8'}"
+    >
       <div class="flex items-center gap-3 mb-2">
-        <div class="p-2 bg-secondary-100 rounded-lg">
+        <div
+          class="p-2 bg-secondary-100 rounded-lg transition-transform duration-300 group-hover:rotate-12"
+        >
           <Icon
             icon="lucide:zap"
             width="20"
@@ -257,12 +302,20 @@
         <h3 class="font-semibold text-text">This Week</h3>
       </div>
       <div class="text-3xl font-bold text-text mb-1">48</div>
-      <p class="text-sm text-text-secondary">Pomodoros completed</p>
+      <p class="text-sm text-text-secondary">
+        <span class="font-semibold text-secondary">Pomodoros</span> completed
+      </p>
     </div>
 
-    <div class="bg-surface border border-border rounded-xl p-6 shadow-lg">
+    <div
+      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-500 hover:shadow-xl group {isVisible
+        ? 'opacity-100 translate-x-0'
+        : 'opacity-0 translate-x-8'}"
+    >
       <div class="flex items-center gap-3 mb-2">
-        <div class="p-2 bg-accent-muted rounded-lg">
+        <div
+          class="p-2 bg-accent-muted rounded-lg transition-transform duration-300 group-hover:rotate-12"
+        >
           <Icon
             icon="lucide:trending-up"
             width="20"
@@ -273,7 +326,9 @@
         <h3 class="font-semibold text-text">Progress</h3>
       </div>
       <div class="text-3xl font-bold text-primary mb-1">+24%</div>
-      <p class="text-sm text-text-secondary">vs. last week</p>
+      <p class="text-sm text-text-secondary">
+        vs. <span class="font-semibold text-accent">last week</span>
+      </p>
     </div>
   </div>
 </div>

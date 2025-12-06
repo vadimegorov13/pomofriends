@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { onMount } from 'svelte';
 
   let userDropdownOpen = false;
@@ -43,14 +43,12 @@
       window.removeEventListener('scroll', handleScroll);
     };
   });
-
-  $: currentPath = $page.url.pathname;
 </script>
 
 <svelte:window on:click={closeDropdown} />
 
 <nav
-  class="bg-surface/40 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-transform duration-300 {isVisible
+  class="bg-surface/40 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-transform duration-300 shadow-sm {isVisible
     ? 'translate-y-0'
     : '-translate-y-full'}"
 >
@@ -64,13 +62,13 @@
       <div class="flex gap-8">
         <a
           href="/leaderboard"
-          class="relative font-medium hover:text-primary transition-colors {currentPath ===
-          '/leaderboard'
-            ? 'text-text'
-            : 'text-text-secondary'}"
+          class="relative font-medium hover:text-secondary transition-colors {page
+            .url.pathname === '/leaderboard'
+            ? 'text-primary'
+            : 'text-text'}"
         >
           <span>Leaderboard</span>
-          {#if currentPath === '/leaderboard'}
+          {#if page.url.pathname === '/leaderboard'}
             <span
               class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
             ></span>
@@ -78,13 +76,13 @@
         </a>
         <a
           href="/about"
-          class="relative font-medium hover:text-primary transition-colors {currentPath ===
-          '/about'
-            ? 'text-text'
-            : 'text-text-secondary'}"
+          class="relative font-medium hover:text-secondary transition-colors {page
+            .url.pathname === '/about'
+            ? 'text-primary'
+            : 'text-text'}"
         >
           <span>About</span>
-          {#if currentPath === '/about'}
+          {#if page.url.pathname === '/about'}
             <span
               class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
             ></span>

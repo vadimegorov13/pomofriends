@@ -32,13 +32,13 @@
 
   <div class="grid gap-6 mb-12">
     <div
-      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-100 hover:shadow-xl {isVisible
+      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-100 hover:shadow-xl group {isVisible
         ? 'opacity-100 translate-x-0'
         : 'opacity-0 -translate-x-8'}"
     >
       <div class="flex items-start gap-4">
         <div
-          class="p-3 bg-primary-100 rounded-lg transition-transform duration-300 hover:rotate-12"
+          class="p-3 bg-primary-100 rounded-lg transition-transform duration-300 group-hover:rotate-12"
         >
           <Icon
             icon="lucide:timer"
@@ -66,13 +66,13 @@
     </div>
 
     <div
-      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-200 hover:shadow-xl {isVisible
+      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-200 hover:shadow-xl group {isVisible
         ? 'opacity-100 translate-x-0'
         : 'opacity-0 translate-x-8'}"
     >
       <div class="flex items-start gap-4">
         <div
-          class="p-3 bg-secondary-100 rounded-lg transition-transform duration-300 hover:rotate-12"
+          class="p-3 bg-secondary-100 rounded-lg transition-transform duration-300 group-hover:rotate-12"
         >
           <Icon
             icon="lucide:users"
@@ -97,13 +97,13 @@
     </div>
 
     <div
-      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-300 hover:shadow-xl {isVisible
+      class="bg-surface border border-border rounded-xl p-6 shadow-lg transition-all duration-700 delay-300 hover:shadow-xl group {isVisible
         ? 'opacity-100 translate-x-0'
         : 'opacity-0 -translate-x-8'}"
     >
       <div class="flex items-start gap-4">
         <div
-          class="p-3 bg-accent-muted rounded-lg transition-transform duration-300 hover:rotate-12"
+          class="p-3 bg-accent-muted rounded-lg transition-transform duration-300 group-hover:rotate-12"
         >
           <Icon
             icon="lucide:target"
