@@ -1,0 +1,119 @@
+{
+  "id": "1",
+  "version": "2.0.0",
+  "shortTitle": "PomoFriends Revamp",
+  "title": "PomoFriends Revamp — New Era Release",
+  "slug": "pomo-friends-revamp-new-era-release",
+  "date": "2025-12-05",
+  "description": "I originally built PomoFriends in 2020 as my capstone project. Since then, my skills have grown a lot, and the old version no longer represented the kind of product I want to build.\n\nThis release marks the beginning of a full revival of the app. I'm no longer abandoning it between updates — I'll be actively improving it, expanding features, and refining the experience until I eventually get bored (hopefully not anytime soon).",
+  "features": [
+    {
+      "id": "f1",
+      "title": "Completely redesigned UI"
+    },
+    {
+      "id": "f2",
+      "title": "Improved user experience across the entire app"
+    },
+    {
+      "id": "f3",
+      "title": "New leaderboard system",
+      "items": [
+        {
+          "id": "f3-1",
+          "text": "Real-time rankings updated as users complete pomodoros"
+        },
+        {
+          "id": "f3-2",
+          "text": "Multiple timeframes: weekly, monthly, and all-time statistics"
+        },
+        {
+          "id": "f3-3",
+          "text": "Top performer badges and achievements"
+        },
+        {
+          "id": "f3-4",
+          "text": "User profiles showing productivity streaks"
+        },
+        {
+          "id": "f3-5",
+          "text": "Competitive motivation through friendly rankings"
+        }
+      ]
+    },
+    {
+      "id": "f4",
+      "title": "Statistics tracking and reporting",
+      "items": [
+        {
+          "id": "f4-1",
+          "text": "Detailed breakdown of completed pomodoros by day and week"
+        },
+        {
+          "id": "f4-2",
+          "text": "Focus time analytics to track productivity trends"
+        },
+        {
+          "id": "f4-3",
+          "text": "Task completion rates and estimates vs actual time"
+        },
+        {
+          "id": "f4-4",
+          "text": "Visual charts showing your progress over time"
+        },
+        {
+          "id": "f4-5",
+          "text": "Export data for personal record keeping"
+        }
+      ]
+    }
+  ],
+  "improvements": [
+    {
+      "id": "i1",
+      "title": "Multiple stability fixes across chat, tasks, and timer logic",
+      "items": [
+        {
+          "id": "i1-1",
+          "text": "Chat messages now load consistently"
+        },
+        {
+          "id": "i1-2",
+          "text": "Task updates sync properly across devices"
+        },
+        {
+          "id": "i1-3",
+          "text": "Timer state persists correctly after refresh"
+        }
+      ]
+    },
+    {
+      "id": "i2",
+      "title": "General cleanup of old, broken, or unfinished functionality"
+    }
+  ],
+  "bugFixes": [
+    {
+      "id": "b1",
+      "title": "Group session issues",
+      "items": [
+        {
+          "id": "b1-1",
+          "text": "Fixed synchronization issues between group members"
+        },
+        {
+          "id": "b1-2",
+          "text": "Fixed \"ghost users\" appearing in groups after they leave"
+        },
+        {
+          "id": "b1-3",
+          "text": "Outdated group sessions no longer persist after all users leave"
+        },
+        {
+          "id": "b1-4",
+          "text": "Group member count now updates in real-time"
+        }
+      ]
+    }
+  ]
+}

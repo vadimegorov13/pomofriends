@@ -1,143 +1,23 @@
 <script lang="ts">
-  import Icon from '@iconify/svelte';
-  import { onMount } from 'svelte';
-  import { page } from '$app/state';
   import { goto } from '$app/navigation';
+  import { page } from '$app/state';
+  import type { ReleaseNote } from '$data/releases/types';
+  import Icon from '@iconify/svelte';
+  import { format, parseISO } from 'date-fns';
+  import { onMount } from 'svelte';
+  import type { PageData } from './$types';
 
-  let isVisible = false;
+  let { data }: { data: PageData } = $props();
 
-  interface ReleaseItem {
-    id: string;
-    title: string;
-    items?: { id: string; text: string }[];
-  }
+  let isVisible = $state(false);
+  let releases = $derived(data.releases);
+  let selectedRelease = $state<ReleaseNote | null>(null);
 
-  interface ReleaseNote {
-    id: string;
-    version: string;
-    shortTitle: string;
-    title: string;
-    slug: string;
-    date: string;
-    description: string;
-    features: ReleaseItem[];
-    improvements: ReleaseItem[];
-    bugFixes: ReleaseItem[];
-  }
-
-  // Mock data - in the future this will come from database
-  const releases: ReleaseNote[] = [
-    {
-      id: '1',
-      version: '2.0.0',
-      shortTitle: 'PomoFriends Revamp',
-      title: 'PomoFriends Revamp — New Era Release',
-      slug: 'pomo-friends-revamp-new-era-release',
-      date: 'December 5, 2025',
-      description:
-        "I originally built PomoFriends in 2020 as my capstone project. Since then, my skills have grown a lot, and the old version no longer represented the kind of product I want to build.\n\nThis release marks the beginning of a full revival of the app. I'm no longer abandoning it between updates — I'll be actively improving it, expanding features, and refining the experience until I eventually get bored (hopefully not anytime soon).",
-      features: [
-        { id: 'f1', title: 'Completely redesigned UI' },
-        { id: 'f2', title: 'Improved user experience across the entire app' },
-        {
-          id: 'f3',
-          title: 'New leaderboard system',
-          items: [
-            {
-              id: 'f3-1',
-              text: 'Real-time rankings updated as users complete pomodoros',
-            },
-            {
-              id: 'f3-2',
-              text: 'Multiple timeframes: weekly, monthly, and all-time statistics',
-            },
-            {
-              id: 'f3-3',
-              text: 'Top performer badges and achievements',
-            },
-            {
-              id: 'f3-4',
-              text: 'User profiles showing productivity streaks',
-            },
-            {
-              id: 'f3-5',
-              text: 'Competitive motivation through friendly rankings',
-            },
-          ],
-        },
-        {
-          id: 'f4',
-          title: 'Statistics tracking and reporting',
-          items: [
-            {
-              id: 'f4-1',
-              text: 'Detailed breakdown of completed pomodoros by day and week',
-            },
-            {
-              id: 'f4-2',
-              text: 'Focus time analytics to track productivity trends',
-            },
-            {
-              id: 'f4-3',
-              text: 'Task completion rates and estimates vs actual time',
-            },
-            {
-              id: 'f4-4',
-              text: 'Visual charts showing your progress over time',
-            },
-            {
-              id: 'f4-5',
-              text: 'Export data for personal record keeping',
-            },
-          ],
-        },
-      ],
-      improvements: [
-        {
-          id: 'i1',
-          title: 'Multiple stability fixes across chat, tasks, and timer logic',
-          items: [
-            { id: 'i1-1', text: 'Chat messages now load consistently' },
-            { id: 'i1-2', text: 'Task updates sync properly across devices' },
-            {
-              id: 'i1-3',
-              text: 'Timer state persists correctly after refresh',
-            },
-          ],
-        },
-        {
-          id: 'i2',
-          title: 'General cleanup of old, broken, or unfinished functionality',
-        },
-      ],
-      bugFixes: [
-        {
-          id: 'b1',
-          title: 'Group session issues',
-          items: [
-            {
-              id: 'b1-1',
-              text: 'Fixed synchronization issues between group members',
-            },
-            {
-              id: 'b1-2',
-              text: 'Fixed "ghost users" appearing in groups after they leave',
-            },
-            {
-              id: 'b1-3',
-              text: 'Outdated group sessions no longer persist after all users leave',
-            },
-            {
-              id: 'b1-4',
-              text: 'Group member count now updates in real-time',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
-  let selectedRelease = releases[0];
+  $effect(() => {
+    if (!selectedRelease) {
+      selectedRelease = data.releases[0];
+    }
+  });
 
   onMount(() => {
     // Check if there's a slug in the URL
@@ -145,16 +25,16 @@
     const slugParam = urlParams.get('slug');
 
     if (slugParam) {
-      const release = releases.find((r) => r.slug === slugParam);
+      const release = data.releases.find((r) => r.slug === slugParam);
       if (release) {
         selectedRelease = release;
       } else {
         // If slug not found, redirect to first release
-        goto(`/releases?slug=${releases[0].slug}`, { replaceState: true });
+        goto(`/releases?slug=${data.releases[0].slug}`, { replaceState: true });
       }
     } else {
       // No slug in URL, set the first release and update URL
-      goto(`/releases?slug=${releases[0].slug}`, { replaceState: true });
+      goto(`/releases?slug=${data.releases[0].slug}`, { replaceState: true });
     }
 
     setTimeout(() => {
@@ -184,7 +64,12 @@
     <p class="text-xl text-text-secondary">
       Track all the <span class="font-semibold text-primary">improvements</span>
       and
-      <span class="font-semibold text-secondary">updates</span> we've made to PomoFriends.
+      <span class="font-semibold text-secondary">updates</span> we've made to
+      <span class="font-semibold">
+        <span class="text-primary">Pomo</span><span class="text-secondary"
+          >Friends</span
+        >
+      </span>.
     </p>
   </div>
 
@@ -200,15 +85,15 @@
         <div class="space-y-2">
           {#each releases as release (release.id)}
             <button
-              on:click={() => selectRelease(release)}
-              class="w-full text-left p-3 rounded-lg transition-all group {selectedRelease.id ===
+              onclick={() => selectRelease(release)}
+              class="w-full text-left p-3 rounded-lg transition-all group {selectedRelease?.id ===
               release.id
                 ? 'bg-primary text-white'
                 : 'hover:bg-bg-accent'}"
             >
               <div class="flex items-center justify-between">
                 <span
-                  class="font-semibold {selectedRelease.id === release.id
+                  class="font-semibold {selectedRelease?.id === release.id
                     ? 'text-white'
                     : 'text-text'}"
                 >
@@ -218,7 +103,7 @@
                   icon="lucide:chevron-right"
                   width="16"
                   height="16"
-                  class="transition-transform duration-300 {selectedRelease.id ===
+                  class="transition-transform duration-300 {selectedRelease?.id ===
                   release.id
                     ? 'translate-x-1'
                     : 'group-hover:translate-x-1'}"
@@ -226,7 +111,7 @@
               </div>
               <div>
                 <div
-                  class="font-medium {selectedRelease.id === release.id
+                  class="font-medium {selectedRelease?.id === release.id
                     ? 'text-white'
                     : 'text-text'}"
                 >
@@ -234,11 +119,11 @@
                 </div>
               </div>
               <div
-                class="text-xs {selectedRelease.id === release.id
+                class="text-xs {selectedRelease?.id === release.id
                   ? 'text-white/80'
                   : 'text-text-secondary'}"
               >
-                {release.date}
+                {format(parseISO(release.date), 'MMMM d, yyyy')}
               </div>
             </button>
           {/each}
@@ -259,24 +144,26 @@
             <div
               class="px-3 py-1 bg-primary text-white rounded-full text-sm font-semibold"
             >
-              v{selectedRelease.version}
+              v{selectedRelease?.version}
             </div>
             <div class="text-sm text-text-secondary">
-              {selectedRelease.date}
+              {selectedRelease?.date
+                ? format(parseISO(selectedRelease?.date), 'MMMM d, yyyy')
+                : 'Unknown Date'}
             </div>
           </div>
           <h2 class="text-3xl font-bold text-text mb-4">
-            {selectedRelease.title}
+            {selectedRelease?.title}
           </h2>
           <div
             class="text-text-secondary text-lg leading-relaxed whitespace-pre-line"
           >
-            {selectedRelease.description}
+            {selectedRelease?.description}
           </div>
         </div>
 
         <!-- What's New -->
-        {#if selectedRelease.features.length > 0}
+        {#if selectedRelease?.features && selectedRelease.features.length > 0}
           <div class="mb-10 pb-10 border-b border-border group">
             <div class="flex items-center gap-3 mb-6">
               <div
@@ -292,7 +179,7 @@
               <h3 class="text-2xl font-semibold text-text">What's New</h3>
             </div>
             <ul class="space-y-4">
-              {#each selectedRelease.features as feature (feature.id)}
+              {#each selectedRelease?.features as feature (feature.id)}
                 <li class="group/item">
                   <div class="flex items-start gap-3 text-text-secondary">
                     <Icon
@@ -331,7 +218,7 @@
         {/if}
 
         <!-- Improvements -->
-        {#if selectedRelease.improvements.length > 0}
+        {#if selectedRelease?.improvements && selectedRelease.improvements.length > 0}
           <div class="mb-10 pb-10 border-b border-border group">
             <div class="flex items-center gap-3 mb-6">
               <div
@@ -347,7 +234,7 @@
               <h3 class="text-2xl font-semibold text-text">Improvements</h3>
             </div>
             <ul class="space-y-4">
-              {#each selectedRelease.improvements as improvement (improvement.id)}
+              {#each selectedRelease?.improvements as improvement (improvement.id)}
                 <li class="group/item">
                   <div class="flex items-start gap-3 text-text-secondary">
                     <Icon
@@ -386,7 +273,7 @@
         {/if}
 
         <!-- Bug Fixes -->
-        {#if selectedRelease.bugFixes.length > 0}
+        {#if selectedRelease?.bugFixes && selectedRelease.bugFixes.length > 0}
           <div class="group">
             <div class="flex items-center gap-3 mb-6">
               <div
@@ -402,7 +289,7 @@
               <h3 class="text-2xl font-semibold text-text">Bug Fixes</h3>
             </div>
             <ul class="space-y-4">
-              {#each selectedRelease.bugFixes as bugFix (bugFix.id)}
+              {#each selectedRelease?.bugFixes as bugFix (bugFix.id)}
                 <li class="group/item">
                   <div class="flex items-start gap-3 text-text-secondary">
                     <Icon
