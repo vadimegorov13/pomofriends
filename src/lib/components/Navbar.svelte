@@ -1,8 +1,12 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
 
   let userDropdownOpen = false;
+  let isVisible = true;
+  let lastScrollY = 0;
+  let scrollThreshold = 100; // pixels to scroll before hiding navbar
 
   function toggleUserDropdown() {
     userDropdownOpen = !userDropdownOpen;
@@ -12,35 +16,52 @@
     userDropdownOpen = false;
   }
 
+  function handleScroll() {
+    const currentScrollY = window.scrollY;
+
+    // Only hide if scrolled past threshold
+    if (currentScrollY > scrollThreshold) {
+      // Scrolling down
+      if (currentScrollY > lastScrollY) {
+        isVisible = false;
+      }
+      // Scrolling up
+      else if (currentScrollY < lastScrollY) {
+        isVisible = true;
+      }
+    } else {
+      // Always show when near top
+      isVisible = true;
+    }
+
+    lastScrollY = currentScrollY;
+  }
+
+  onMount(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  });
+
   $: currentPath = $page.url.pathname;
 </script>
 
 <svelte:window on:click={closeDropdown} />
 
-<nav class="bg-surface border-b border-border sticky top-0 z-50">
+<nav
+  class="bg-surface/40 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-transform duration-300 {isVisible
+    ? 'translate-y-0'
+    : '-translate-y-full'}"
+>
   <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
     <div class="flex items-center gap-12">
-      <a
-        href="/"
-        class="text-xl font-bold text-text tracking-tight hover:text-primary transition-colors"
-      >
-        PomoFriends
+      <a href="/" class="text-xl font-bold tracking-tight">
+        <span class="text-primary">Pomo</span><span class="text-secondary"
+          >Friends</span
+        >
       </a>
       <div class="flex gap-8">
-        <a
-          href="/"
-          class="relative font-medium hover:text-primary transition-colors {currentPath ===
-          '/'
-            ? 'text-text'
-            : 'text-text-secondary'}"
-        >
-          <span>Home</span>
-          {#if currentPath === '/'}
-            <span
-              class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
-            ></span>
-          {/if}
-        </a>
         <a
           href="/leaderboard"
           class="relative font-medium hover:text-primary transition-colors {currentPath ===
