@@ -75,6 +75,20 @@
           {/if}
         </a>
         <a
+          href="/releases"
+          class="relative font-medium hover:text-secondary transition-colors {page
+            .url.pathname === '/releases'
+            ? 'text-primary'
+            : 'text-text'}"
+        >
+          <span>Releases</span>
+          {#if page.url.pathname === '/releases'}
+            <span
+              class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
+            ></span>
+          {/if}
+        </a>
+        <a
           href="/about"
           class="relative font-medium hover:text-secondary transition-colors {page
             .url.pathname === '/about'
