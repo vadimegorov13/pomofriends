@@ -54,10 +54,21 @@
 >
   <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
     <div class="flex items-center gap-12">
-      <a href="/" class="text-xl font-bold tracking-tight">
-        <span class="text-primary">Pomo</span><span class="text-secondary"
-          >Friends</span
-        >
+      <a
+        href="/"
+        class="text-xl font-bold tracking-tight flex items-center gap-2 group"
+      >
+        <Icon
+          icon="lucide:timer"
+          width="24"
+          height="24"
+          class="text-primary transition-transform duration-300 group-hover:rotate-12"
+        />
+        <span>
+          <span class="text-primary">Pomo</span><span class="text-secondary"
+            >Friends</span
+          >
+        </span>
       </a>
       <div class="flex gap-8">
         <a
