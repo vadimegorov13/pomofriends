@@ -61,12 +61,40 @@
   import PomodoroTimer from '$lib/components/PomodoroTimer.svelte';
   import TaskList from '$lib/components/TaskList.svelte';
   import GroupChat from '$lib/components/GroupChat.svelte';
+  import { onMount } from 'svelte';
+
+  let isVisible = false;
+
+  onMount(() => {
+    // Trigger animations after component mounts
+    setTimeout(() => {
+      isVisible = true;
+    }, 100);
+  });
 </script>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
   <div class="flex flex-col gap-6">
-    <PomodoroTimer />
-    <TaskList />
+    <div
+      class="transition-all duration-700 {isVisible
+        ? 'opacity-100 translate-y-0'
+        : 'opacity-0 -translate-y-8'}"
+    >
+      <PomodoroTimer />
+    </div>
+    <div
+      class="transition-all duration-700 delay-100 {isVisible
+        ? 'opacity-100 translate-x-0'
+        : 'opacity-0 -translate-x-8'}"
+    >
+      <TaskList />
+    </div>
   </div>
-  <GroupChat />
+  <div
+    class="transition-all duration-700 delay-200 {isVisible
+      ? 'opacity-100 translate-x-0'
+      : 'opacity-0 translate-x-8'}"
+  >
+    <GroupChat />
+  </div>
 </div>
