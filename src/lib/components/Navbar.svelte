@@ -3,8 +3,9 @@
   import { page } from '$app/state';
   import { onMount } from 'svelte';
 
-  let userDropdownOpen = false;
-  let isVisible = true;
+  let userDropdownOpen = $state(false);
+  let mobileMenuOpen = $state(false);
+  let isVisible = $state(true);
   let lastScrollY = 0;
   let scrollThreshold = 100; // pixels to scroll before hiding navbar
 
@@ -12,8 +13,13 @@
     userDropdownOpen = !userDropdownOpen;
   }
 
-  function closeDropdown() {
+  function toggleMobileMenu() {
+    mobileMenuOpen = !mobileMenuOpen;
+  }
+
+  function closeDropdowns() {
     userDropdownOpen = false;
+    mobileMenuOpen = false;
   }
 
   function handleScroll() {
@@ -24,6 +30,7 @@
       // Scrolling down
       if (currentScrollY > lastScrollY) {
         isVisible = false;
+        mobileMenuOpen = false; // Close mobile menu when hiding navbar
       }
       // Scrolling up
       else if (currentScrollY < lastScrollY) {
@@ -45,18 +52,19 @@
   });
 </script>
 
-<svelte:window on:click={closeDropdown} />
+<svelte:window onclick={closeDropdowns} />
 
 <nav
   class="bg-surface/40 backdrop-blur-md border-b border-border sticky top-0 z-50 transition-transform duration-300 shadow-sm {isVisible
     ? 'translate-y-0'
     : '-translate-y-full'}"
 >
-  <div class="max-w-7xl mx-auto px-8 flex justify-between items-center h-16">
-    <div class="flex items-center gap-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
       <a
         href="/"
-        class="text-xl font-bold tracking-tight flex items-center gap-2 group"
+        class="text-xl font-bold tracking-tight flex items-center gap-2 group z-10"
       >
         <Icon
           icon="lucide:timer"
@@ -70,86 +78,173 @@
           >
         </span>
       </a>
-      <div class="flex gap-8">
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center gap-12">
+        <div class="flex gap-8">
+          <a
+            href="/leaderboard"
+            class="relative font-medium hover:text-secondary transition-colors {page
+              .url.pathname === '/leaderboard'
+              ? 'text-primary'
+              : 'text-text'}"
+          >
+            <span>Leaderboard</span>
+            {#if page.url.pathname === '/leaderboard'}
+              <span
+                class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
+              ></span>
+            {/if}
+          </a>
+          <a
+            href="/releases"
+            class="relative font-medium hover:text-secondary transition-colors {page
+              .url.pathname === '/releases'
+              ? 'text-primary'
+              : 'text-text'}"
+          >
+            <span>Releases</span>
+            {#if page.url.pathname === '/releases'}
+              <span
+                class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
+              ></span>
+            {/if}
+          </a>
+          <a
+            href="/about"
+            class="relative font-medium hover:text-secondary transition-colors {page
+              .url.pathname === '/about'
+              ? 'text-primary'
+              : 'text-text'}"
+          >
+            <span>About</span>
+            {#if page.url.pathname === '/about'}
+              <span
+                class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
+              ></span>
+            {/if}
+          </a>
+        </div>
+
+        <!-- User Dropdown -->
+        <div class="relative">
+          <button
+            class="bg-bg-muted hover:bg-bg-accent border border-border rounded-xl w-11 h-11 flex items-center justify-center text-text-secondary transition-all"
+            onclick={(e) => {
+              e.stopPropagation();
+              toggleUserDropdown();
+            }}
+            aria-label="User menu"
+          >
+            <Icon icon="mdi:account-circle" width="24" height="24" />
+          </button>
+          <div
+            class="absolute top-full right-0 mt-2 bg-surface-elevated border border-border rounded-xl min-w-[180px] shadow-2xl transition-all duration-200 {userDropdownOpen
+              ? 'opacity-100 visible translate-y-0'
+              : 'opacity-0 invisible -translate-y-2'}"
+          >
+            <a
+              href="/profile"
+              class="block px-4 py-3 text-text-secondary hover:bg-bg-accent hover:text-text transition-all first:rounded-t-xl"
+            >
+              Profile
+            </a>
+            <a
+              href="/stats"
+              class="block px-4 py-3 text-text-secondary hover:bg-bg-accent hover:text-text transition-all"
+            >
+              Stats
+            </a>
+            <a
+              href="/settings"
+              class="block px-4 py-3 text-text-secondary hover:bg-bg-accent hover:text-text transition-all"
+            >
+              Settings
+            </a>
+            <div class="h-px bg-border my-2"></div>
+            <a
+              href="/logout"
+              class="block px-4 py-3 text-secondary hover:bg-bg-accent hover:text-secondary-hover transition-all last:rounded-b-xl"
+            >
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button
+        class="md:hidden bg-bg-muted hover:bg-bg-accent border border-border rounded-xl w-11 h-11 flex items-center justify-center text-text-secondary transition-all z-10"
+        onclick={(e) => {
+          e.stopPropagation();
+          toggleMobileMenu();
+        }}
+        aria-label="Toggle menu"
+      >
+        <Icon
+          icon={mobileMenuOpen ? 'lucide:x' : 'lucide:menu'}
+          width="24"
+          height="24"
+        />
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div
+      class="md:hidden border-t border-border overflow-hidden transition-all duration-300 ease-in-out {mobileMenuOpen
+        ? 'max-h-[500px] opacity-100'
+        : 'max-h-0 opacity-0 border-transparent'}"
+    >
+      <div class="py-4 space-y-1">
         <a
           href="/leaderboard"
-          class="relative font-medium hover:text-secondary transition-colors {page
+          class="block px-4 py-3 rounded-lg font-medium transition-colors {page
             .url.pathname === '/leaderboard'
             ? 'text-primary'
-            : 'text-text'}"
+            : 'text-text hover:bg-bg-accent'}"
         >
-          <span>Leaderboard</span>
-          {#if page.url.pathname === '/leaderboard'}
-            <span
-              class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
-            ></span>
-          {/if}
+          Leaderboard
         </a>
         <a
           href="/releases"
-          class="relative font-medium hover:text-secondary transition-colors {page
+          class="block px-4 py-3 rounded-lg font-medium transition-colors {page
             .url.pathname === '/releases'
             ? 'text-primary'
-            : 'text-text'}"
+            : 'text-text hover:bg-bg-accent'}"
         >
-          <span>Releases</span>
-          {#if page.url.pathname === '/releases'}
-            <span
-              class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
-            ></span>
-          {/if}
+          Releases
         </a>
         <a
           href="/about"
-          class="relative font-medium hover:text-secondary transition-colors {page
+          class="block px-4 py-3 rounded-lg font-medium transition-colors {page
             .url.pathname === '/about'
             ? 'text-primary'
-            : 'text-text'}"
+            : 'text-text hover:bg-bg-accent'}"
         >
-          <span>About</span>
-          {#if page.url.pathname === '/about'}
-            <span
-              class="absolute -bottom-4 left-0 right-0 h-0.5 bg-primary rounded-t"
-            ></span>
-          {/if}
+          About
         </a>
-      </div>
-    </div>
-    <div class="relative">
-      <button
-        class="bg-bg-muted hover:bg-bg-accent border border-border rounded-xl w-11 h-11 flex items-center justify-center text-text-secondary transition-all"
-        on:click|stopPropagation={toggleUserDropdown}
-        aria-label="User menu"
-      >
-        <Icon icon="mdi:account-circle" width="24" height="24" />
-      </button>
-      <div
-        class="absolute top-full right-0 mt-2 bg-surface-elevated border border-border rounded-xl min-w-[180px] shadow-2xl transition-all duration-200 {userDropdownOpen
-          ? 'opacity-100 visible translate-y-0'
-          : 'opacity-0 invisible -translate-y-2'}"
-      >
+        <div class="h-px bg-border my-2"></div>
         <a
           href="/profile"
-          class="block px-4 py-3 text-text-secondary hover:bg-bg-accent hover:text-text transition-all first:rounded-t-xl"
+          class="block px-4 py-3 rounded-lg text-text-secondary hover:bg-bg-accent hover:text-text transition-colors"
         >
           Profile
         </a>
         <a
           href="/stats"
-          class="block px-4 py-3 text-text-secondary hover:bg-bg-accent hover:text-text transition-all"
+          class="block px-4 py-3 rounded-lg text-text-secondary hover:bg-bg-accent hover:text-text transition-colors"
         >
           Stats
         </a>
         <a
           href="/settings"
-          class="block px-4 py-3 text-text-secondary hover:bg-bg-accent hover:text-text transition-all"
+          class="block px-4 py-3 rounded-lg text-text-secondary hover:bg-bg-accent hover:text-text transition-colors"
         >
           Settings
         </a>
-        <div class="h-px bg-border my-2"></div>
         <a
           href="/logout"
-          class="block px-4 py-3 text-secondary hover:bg-bg-accent hover:text-secondary-hover transition-all last:rounded-b-xl"
+          class="block px-4 py-3 rounded-lg text-secondary hover:bg-bg-accent hover:text-secondary-hover transition-colors"
         >
           Logout
         </a>
